@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h1>01.html</h1>
+<script type="text/javascript">
+    /*    var es = new EventSource("/sse");
+        es.onopen = function (e) {
+            console.log("open")
+        };
+        es.onmessage = function (e) {
+            console.log(e.data);
+        }
+        es.onerror = function (e) {
+            console.log("error")
+            es.close()
+        }*/
+    var es = new EventSource("/sse");
+    es.addEventListener("open", function (e) {
+        console.log("open");
+    })
+    es.addEventListener("message", function (e) {
+        console.log(e.data);
+    })
+    es.addEventListener("javaboy", function (e) {
+        console.log(e.data, e.lastEventId,e);
+    })
+    es.addEventListener("error", function (e) {
+        console.log("error")
+        es.close();
+    })
+</script>
+</body>
+</html>
