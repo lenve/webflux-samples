@@ -19,6 +19,10 @@ import org.springframework.web.reactive.function.server.*;
 public class RouterConfiguration {
     @Bean
     RouterFunction<ServerResponse> personRouter(PersonHandler personHandler) {
-        return RouterFunctions.nest(RequestPredicates.path("/person"), RouterFunctions.route(RequestPredicates.POST("/"), personHandler::addPerson).andRoute(RequestPredicates.GET("/"), personHandler::getAllPerson).andRoute(RequestPredicates.DELETE("/{id}"), personHandler::deletePerson));
+        return RouterFunctions
+                .nest(RequestPredicates.path("/person"),
+                        RouterFunctions.route(RequestPredicates.POST("/"), personHandler::addPerson)
+                                .andRoute(RequestPredicates.GET("/"), personHandler::getAllPerson)
+                                .andRoute(RequestPredicates.DELETE("/{id}"), personHandler::deletePerson));
     }
 }
