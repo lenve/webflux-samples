@@ -9,6 +9,11 @@ import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
 import reactor.core.publisher.Mono;
 
+import static java.lang.Long.parseLong;
+import static org.springframework.http.MediaType.APPLICATION_JSON;
+import static org.springframework.web.reactive.function.server.ServerResponse.notFound;
+import static org.springframework.web.reactive.function.server.ServerResponse.ok;
+
 /**
  * @author 江南一点雨
  * @微信公众号 江南一点雨
@@ -25,18 +30,18 @@ public class UserHandler {
     UserRepository userRepository;
 
     public Mono<ServerResponse> getAllUsers(ServerRequest serverRequest) {
-        return ServerResponse.ok().contentType(MediaType.APPLICATION_JSON)
+        return ok().contentType(APPLICATION_JSON)
                 .body(userRepository.findAll(), User.class);
     }
 
     public Mono<ServerResponse> addUser(ServerRequest serverRequest) {
-        return ServerResponse.ok().contentType(MediaType.APPLICATION_JSON)
+        return ok().contentType(APPLICATION_JSON)
                 .body(userRepository.saveAll(serverRequest.bodyToMono(User.class)), User.class);
     }
 
     public Mono<ServerResponse> deleteUser(ServerRequest serverRequest) {
-        return userRepository.findById(Long.parseLong(serverRequest.pathVariable("id")))
-                .flatMap(user -> userRepository.delete(user).then(ServerResponse.ok().build()))
-                .switchIfEmpty(ServerResponse.notFound().build());
+        return userRepository.findById(parseLong(serverRequest.pathVariable("id")))
+                .flatMap(user -> userRepository.delete(user).then(ok().build()))
+                .switchIfEmpty(notFound().build());
     }
 }
